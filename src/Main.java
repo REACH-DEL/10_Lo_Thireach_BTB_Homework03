@@ -1,15 +1,11 @@
 import java.util.*;
 import java.util.regex.Pattern;
-import java.util.stream.Stream;
 
 import org.nocrala.tools.texttablefmt.BorderStyle;
 import org.nocrala.tools.texttablefmt.CellStyle;
 import org.nocrala.tools.texttablefmt.ShownBorders;
 import org.nocrala.tools.texttablefmt.Table;
 import org.nocrala.tools.texttablefmt.CellStyle.HorizontalAlign;
-
-import javax.xml.validation.Validator;
-
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
@@ -29,39 +25,37 @@ public class Main {
             Table tMain = new Table(1, BorderStyle.UNICODE_BOX_DOUBLE_BORDER);
             CellStyle cs = new CellStyle(HorizontalAlign.center);
             tMain.setColumnWidth(0, 50, 50);
-            tMain.addCell("STAFF MANAGEMENT SYSTEM", cs);
-            tMain.addCell(" 1. Insert Employee");
-            tMain.addCell(" 2. Update Employee");
-            tMain.addCell(" 3. Display Employee");
-            tMain.addCell(" 4. Remove Employee");
-            tMain.addCell(" 5. Exit");
+            tMain.addCell(Color.BLUE.getColor("STAFF MANAGEMENT SYSTEM"), cs);
+            tMain.addCell(Color.GREEN.getColor(" 1. Insert Employee"));
+            tMain.addCell(Color.GREEN.getColor(" 2. Update Employee"));
+            tMain.addCell(Color.GREEN.getColor(" 3. Display Employee"));
+            tMain.addCell(Color.GREEN.getColor(" 4. Remove Employee"));
+            tMain.addCell(Color.GREEN.getColor(" 5. Exit"));
             System.out.println(tMain.render());
             System.out.println("----------------------------------------");
             System.out.print("Choose an option: ");
             String op = sc.nextLine();
             switch (op) {
-                case "1"->{
-                    insert();
-                }
-                case "2"->{
-                    update();
-                }
-                case "3"->{
-                    display();
-                }
-                case "4"->{
-                    delete();
-                }
+                case "1"->insert();
+
+                case "2"->update();
+
+                case "3"->display();
+
+                case "4"->delete();
+
                 case "5"->{
-                    System.out.println("Thank you! Good luck🥰");
+                    System.out.println(Color.BLUE.getColor("Thank you! Good luck🥰"));
                     return;
                 }
-                default -> System.out.println("Invalid Option!");
+                default -> System.out.println(Color.RED.getColor("Invalid Option!"));
             }
         }
     }
+
     static void display(){
         int currentPage = 1;
+        System.out.println(Color.BLUE.getColor("======= * Display Employee * ======="));
         display:
         while (true){
             CellStyle cs = new CellStyle(HorizontalAlign.center);
@@ -75,25 +69,25 @@ public class Main {
             tDisplay.setColumnWidth(6, 10, 10);
             tDisplay.setColumnWidth(7, 10, 10);
             tDisplay.setColumnWidth(8, 15, 15);
-            tDisplay.addCell("Type", cs);
-            tDisplay.addCell("ID", cs);
-            tDisplay.addCell("Name", cs);
-            tDisplay.addCell("Address", cs);
-            tDisplay.addCell("Salary", cs);
-            tDisplay.addCell("Bonus", cs);
-            tDisplay.addCell("Hour", cs);
-            tDisplay.addCell("Rate", cs);
-            tDisplay.addCell("Pay", cs);
+            tDisplay.addCell(Color.BLUE.getColor("Type"), cs);
+            tDisplay.addCell(Color.BLUE.getColor("ID"), cs);
+            tDisplay.addCell(Color.BLUE.getColor("Name"), cs);
+            tDisplay.addCell(Color.BLUE.getColor("Address"), cs);
+            tDisplay.addCell(Color.BLUE.getColor("Salary"), cs);
+            tDisplay.addCell(Color.BLUE.getColor("Bonus"), cs);
+            tDisplay.addCell(Color.BLUE.getColor("Hour"), cs);
+            tDisplay.addCell(Color.BLUE.getColor("Rate"), cs);
+            tDisplay.addCell(Color.BLUE.getColor("Pay"), cs);
             int allPage = (emps.size()%3==0)? emps.size() / 3: emps.size()/3 +1;
             emps.stream()
-                    .skip((currentPage - 1) * 3)
+                    .skip((currentPage - 1) * 3L)
                     .limit(3)
                     .forEach(emp -> {
                         String type, salary, bonus, hour, rate;
 
                         if (emp instanceof Volunteer) {
                             type = "Volunteer";
-                            salary = "$" + emp.toString();
+                            salary = "$" + emp;
                             bonus = "---";
                             hour = "---";
                             rate = "---";
@@ -113,15 +107,15 @@ public class Main {
                             rate = "$" + dataArr[1];
                         }
 
-                        tDisplay.addCell(type, cs);
-                        tDisplay.addCell(String.valueOf(emp.id), cs);
-                        tDisplay.addCell(emp.name);
-                        tDisplay.addCell(emp.address, cs);
-                        tDisplay.addCell(salary, cs);
-                        tDisplay.addCell(bonus, cs);
-                        tDisplay.addCell(hour, cs);
-                        tDisplay.addCell(rate, cs);
-                        tDisplay.addCell("$" + emp.pay(), cs);
+                        tDisplay.addCell(Color.GREEN.getColor(type), cs);
+                        tDisplay.addCell(Color.YELLOW.getColor(String.valueOf(emp.id)), cs);
+                        tDisplay.addCell(Color.GREEN.getColor(emp.name), cs);
+                        tDisplay.addCell(Color.GREEN.getColor(emp.address), cs);
+                        tDisplay.addCell(Color.YELLOW.getColor(salary), cs);
+                        tDisplay.addCell(Color.YELLOW.getColor(bonus), cs);
+                        tDisplay.addCell(Color.YELLOW.getColor(hour), cs);
+                        tDisplay.addCell(Color.YELLOW.getColor(rate), cs);
+                        tDisplay.addCell(Color.GREEN.getColor("$" + emp.pay()), cs);
                     });
             System.out.println(tDisplay.render());
             System.out.println("\nPage: "+ currentPage +"/"+allPage);
@@ -135,13 +129,14 @@ public class Main {
                 case "3" -> currentPage = (currentPage > 1)?currentPage-1:currentPage;
                 case "4" -> currentPage = allPage;
                 case "5" -> {break display;}
-                default -> System.out.println("Invalid Option!");
+                default -> System.out.println(Color.RED.getColor("Invalid Option!"));
             }
         }
     }
     static void insert(){
         Table tType = new Table(4, BorderStyle.UNICODE_BOX, ShownBorders.ALL);
         CellStyle cs = new CellStyle(HorizontalAlign.center);
+        System.out.println(Color.BLUE.getColor("======= * Insert Employee * ======="));
         type:
         while (true) {
             tType.setColumnWidth(0, 20, 20);
@@ -173,50 +168,50 @@ public class Main {
                     break type;
 
                 }
-                default -> System.out.println("Invalid Type!");
+                default -> System.out.println(Color.RED.getColor("Invalid Type!"));
             }
         }
     }
     static void insertVolunteer(){
         System.out.println("ID: " + id);
-        String name = validation("=> Enter Name: ", "([a-zA-Z]+\\s?){1,15}", "Name allowed only text and 15 length!");
-        String address = validation("=> Enter Address: ", "([a-zA-Z\\d]+\\s?){1,15}", "Address allowed text and number and 15 length!");
-        double salary = Double.parseDouble(validation("=> Enter Salary: ", "[1-9]\\d{0,5}(\\.\\d{1,2})?", "Salary allowed only number and maximum 999999!"));
+        String name = validation("=> Enter Name: ", "^[a-zA-Z ]{1,15}$", "Name allowed only text and max 15 characters!");
+        String address = validation("=> Enter Address: ", "^[a-zA-Z\\d ]{1,15}$", "Address allowed text, numbers, and max 15 characters!");
+        double salary = Double.parseDouble(validation("=> Enter Salary: ", "^[1-9]\\d{0,5}(\\.\\d{1,2})?$", "Salary allowed only numbers, max 999999.99!"));
         StaffMember volunteer = new Volunteer(id, name, address, salary);
         emps.add(volunteer);
         id++;
-        System.out.println("* You added " + name + " type of Volunteer successfully! *");
+        System.out.println(Color.GREEN.getColor("* You added " + name + " type of Volunteer successfully! *"));
     }
     static void insertSalariesEmp(){
         System.out.println("ID: " + id);
-        String name = validation("=> Enter Name: ", "([a-zA-Z]+\\s?){1,15}", "Name allowed only text and 15 length!");
-        String address = validation("=> Enter Address: ", "([a-zA-Z\\d]+\\s?){1,15}", "Address allowed text and number and 15 length!");
-        double salary = Double.parseDouble(validation("=> Enter Salary: ", "[1-9]\\d{0,5}(\\.\\d{1,2})?", "Salary allowed only number and maximum 999999!"));
-        double bonus = Double.parseDouble(validation("=> Enter bonus: ", "[1-9]\\d{0,3}(\\.\\d{1,2})?", "Bonus allowed only number and maximum 9999!"));
+        String name = validation("=> Enter Name: ", "^[a-zA-Z ]{1,15}$", "Name allowed only text and max 15 characters!");
+        String address = validation("=> Enter Address: ", "^[a-zA-Z\\d ]{1,15}$", "Address allowed text, numbers, and max 15 characters!");
+        double salary = Double.parseDouble(validation("=> Enter Salary: ", "^[1-9]\\d{0,5}(\\.\\d{1,2})?$", "Salary allowed only numbers, max 999999.99!"));
+        double bonus = Double.parseDouble(validation("=> Enter bonus: ", "^[1-9]\\d{0,3}(\\.\\d{1,2})?$", "Bonus allowed only numbers up to 9999.99!"));
         StaffMember volunteer = new SalariesEmployee(id, name, address, salary, bonus);
         emps.add(volunteer);
         id++;
-        System.out.println("* You added " + name + " type of Salaries Employee successfully! *");
+        System.out.println(Color.GREEN.getColor("* You added " + name + " type of Salaries Employee successfully! *"));
     }
     static void insertHourlyEmp(){
         System.out.println("ID: " + id);
-        String name = validation("=> Enter Name: ", "([a-zA-Z]+\\s?){1,15}", "Name allowed only text and 15 length!");
-        String address = validation("=> Enter Address: ", "([a-zA-Z\\d]+\\s?){1,15}", "Address allowed text and number and 15 length!");
-        int hour = Integer.parseInt(validation("=> Enter Hour: ", "[1-9]\\d{0,2}", "Hour allowed only number and maximum 999!"));
-        double rate = Double.parseDouble(validation("=> Enter Rate: ", "[1-9]\\d{0,3}(\\.\\d{1,2})?", "Salary allowed only number and maximum 9999!"));
-        StaffMember volunteer = new SalariesEmployee(id, name, address, hour, rate);
+        String name = validation("=> Enter Name: ", "^[a-zA-Z ]{1,15}$", "Name allowed only text and max 15 characters!");
+        String address = validation("=> Enter Address: ", "^[a-zA-Z\\d ]{1,15}$", "Address allowed text, numbers, and max 15 characters!");
+        int hour = Integer.parseInt(validation("=> Enter Hour: ", "^[1-9]\\d{0,2}$", "Hour allowed only numbers up to 999!"));
+        double rate = Double.parseDouble(validation("=> Enter Rate: ", "^[1-9]\\d{0,3}(\\.\\d{1,2})?$", "Rate allowed only numbers up to 9999.99!"));
+        StaffMember volunteer = new HourSalaryEmployee(id, name, address, hour, rate);
         emps.add(volunteer);
         id++;
-        System.out.println("* You added " + name + " type of Hourly Employee successfully! *");
+        System.out.println(Color.GREEN.getColor("* You added " + name + " type of Hourly Employee successfully! *"));
     }
     static void delete(){
-        System.out.println("======= * Remove Employee * =======");
+        System.out.println(Color.BLUE.getColor("======= * Remove Employee * ======="));
         int searchID = searchID("Remove");
         emps.removeIf(e -> e.id == searchID);
-        System.out.println("* ID: " + searchID + " has removed successfully! *");
+        System.out.println(Color.GREEN.getColor("* ID: " + searchID + " has removed successfully! *"));
     }
     static void update(){
-        System.out.println("======= * Update Employee * =======");
+        System.out.println(Color.BLUE.getColor("======= * Update Employee * ======="));
         int searchedID = searchID("Update");
         emps.stream().filter(e->e.id==searchedID).forEach(e->{
             Table tSearch;
@@ -232,18 +227,18 @@ public class Main {
                     tSearch.setColumnWidth(3, 18, 18);
                     tSearch.setColumnWidth(4, 15, 15);
                     tSearch.setColumnWidth(5, 15, 15);
-                    tSearch.addCell("Type", cs);
-                    tSearch.addCell("ID", cs);
-                    tSearch.addCell("Name", cs);
-                    tSearch.addCell("Address", cs);
-                    tSearch.addCell("Salary", cs);
-                    tSearch.addCell("Pay", cs);
-                    tSearch.addCell("Volunteer", cs);
-                    tSearch.addCell(e.id + "", cs);
-                    tSearch.addCell(e.name);
-                    tSearch.addCell(e.address, cs);
-                    tSearch.addCell("$" + e.toString(), cs);
-                    tSearch.addCell("$" + e.pay(), cs);
+                    tSearch.addCell(Color.BLUE.getColor("Type"), cs);
+                    tSearch.addCell(Color.BLUE.getColor("ID"), cs);
+                    tSearch.addCell(Color.BLUE.getColor("Name"), cs);
+                    tSearch.addCell(Color.BLUE.getColor("Address"), cs);
+                    tSearch.addCell(Color.BLUE.getColor("Salary"), cs);
+                    tSearch.addCell(Color.BLUE.getColor("Pay"), cs);
+                    tSearch.addCell(Color.GREEN.getColor("Volunteer"), cs);
+                    tSearch.addCell(Color.YELLOW.getColor(e.id+""), cs);
+                    tSearch.addCell(Color.GREEN.getColor(e.name), cs);
+                    tSearch.addCell(Color.GREEN.getColor(e.address), cs);
+                    tSearch.addCell(Color.YELLOW.getColor("$" + e), cs);
+                    tSearch.addCell(Color.GREEN.getColor("$" + e.pay()), cs);
                     System.out.println(tSearch.render());
                     System.out.println("\nChoose one column to update: ");
                     System.out.println("1. Name\t\t2. Address\t\t3. Salary\t\t0. Cancel");
@@ -252,31 +247,28 @@ public class Main {
                         int op = Integer.parseInt(sc.nextLine());
                         switch (op) {
                             case 1 -> {
-                                String name = validation("=> Change Name To: ", "([a-zA-Z]+\\s?){1,15}", "Name allowed only text and 15 length!");
+                                String name = validation("=> Enter Name: ", "^[a-zA-Z ]{1,15}$", "Name allowed only text and max 15 characters!");
                                 e.setName(name);
-                                System.out.println("* Name has updated success fully! *");
-                                continue;
+                                System.out.println(Color.GREEN.getColor("* Name has updated success fully! *"));
                             }
                             case 2 -> {
-                                String address = validation("=> Change Address To: ", "([a-zA-Z\\d]+\\s?){1,15}", "Address allowed text and number and 15 length!");
+                                String address = validation("=> Enter Address: ", "^[a-zA-Z\\d ]{1,15}$", "Address allowed text, numbers, and max 15 characters!");
                                 e.setAddress(address);
-                                System.out.println("* Address has updated success fully! *");
-                                continue;
+                                System.out.println(Color.GREEN.getColor("* Address has updated success fully! *"));
                             }
 
                             case 3 -> {
-                                double salary = Double.parseDouble(validation("=> Change Salary To: ", "[1-9]\\d{0,5}(\\.\\d{1,2})?", "Salary allowed only number and maximum 999999!"));
+                                double salary = Double.parseDouble(validation("=> Enter Salary: ", "^[1-9]\\d{0,5}(\\.\\d{1,2})?$", "Salary allowed only numbers, max 999999.99!"));
                                 ((Volunteer) e).setSalary(salary);
-                                System.out.println("* Salary has updated success fully! *");
-                                continue;
+                                System.out.println(Color.GREEN.getColor("* Salary has updated success fully! *"));
                             }
                             case 0 -> {
                                 break update;
                             }
-                            default -> System.out.println("Invalid option!");
+                            default -> System.out.println(Color.RED.getColor("Invalid option!"));
                         }
                     } catch (NumberFormatException n) {
-                        System.out.println("Option allowed only number!");
+                        System.out.println(Color.RED.getColor("Option allowed only number!"));
                     }
 
                 } else {
@@ -289,20 +281,20 @@ public class Main {
                     tSearch.setColumnWidth(4, 15, 15);
                     tSearch.setColumnWidth(5, 15, 15);
                     tSearch.setColumnWidth(6, 15, 15);
-                    tSearch.addCell("Type", cs);
-                    tSearch.addCell("ID", cs);
-                    tSearch.addCell("Name", cs);
-                    tSearch.addCell("Address", cs);
-                    tSearch.addCell((e instanceof SalariesEmployee) ? "Salary" : "Hour", cs);
-                    tSearch.addCell((e instanceof SalariesEmployee) ? "Bonus" : "Rate", cs);
-                    tSearch.addCell("Pay", cs);
-                    tSearch.addCell((e instanceof SalariesEmployee) ? "Salaries Employee" : "Hourly Employee", cs);
-                    tSearch.addCell(e.id + "", cs);
-                    tSearch.addCell(e.name);
-                    tSearch.addCell(e.address, cs);
-                    tSearch.addCell((e instanceof SalariesEmployee) ? "$" + dataArr[0] : dataArr[0], cs);
-                    tSearch.addCell("$" + dataArr[1], cs);
-                    tSearch.addCell("$" + e.pay(), cs);
+                    tSearch.addCell(Color.BLUE.getColor("Type"), cs);
+                    tSearch.addCell(Color.BLUE.getColor("ID"), cs);
+                    tSearch.addCell(Color.BLUE.getColor("Name"), cs);
+                    tSearch.addCell(Color.BLUE.getColor("Address"), cs);
+                    tSearch.addCell(Color.BLUE.getColor((e instanceof SalariesEmployee) ? "Salary" : "Hour"), cs);
+                    tSearch.addCell(Color.BLUE.getColor((e instanceof SalariesEmployee) ? "Bonus" : "Rate"), cs);
+                    tSearch.addCell(Color.BLUE.getColor("Pay"), cs);
+                    tSearch.addCell(Color.GREEN.getColor((e instanceof SalariesEmployee) ? "Salaries Employee" : "Hourly Employee"), cs);
+                    tSearch.addCell(Color.YELLOW.getColor(e.id + ""), cs);
+                    tSearch.addCell(Color.GREEN.getColor(e.name),cs);
+                    tSearch.addCell(Color.GREEN.getColor(e.address), cs);
+                    tSearch.addCell(Color.YELLOW.getColor((e instanceof SalariesEmployee) ? "$" + dataArr[0] : dataArr[0]), cs);
+                    tSearch.addCell(Color.YELLOW.getColor("$" + dataArr[1]), cs);
+                    tSearch.addCell(Color.GREEN.getColor("$" + e.pay()), cs);
                     System.out.println(tSearch.render());
                     System.out.println("\nChoose one column to update: ");
                     if (e instanceof SalariesEmployee) {
@@ -312,37 +304,33 @@ public class Main {
                             int op = Integer.parseInt(sc.nextLine());
                             switch (op) {
                                 case 1 -> {
-                                    String name = validation("=> Change Name To: ", "([a-zA-Z]+\\s?){1,15}", "Name allowed only text and 15 length!");
+                                    String name = validation("=> Enter Name: ", "^[a-zA-Z ]{1,15}$", "Name allowed only text and max 15 characters!");
                                     e.setName(name);
-                                    System.out.println("* Name has updated success fully! *");
-                                    continue;
+                                    System.out.println(Color.GREEN.getColor("* Name has updated success fully! *"));
                                 }
                                 case 2 -> {
-                                    String address = validation("=> Change Address To: ", "([a-zA-Z\\d]+\\s?){1,15}", "Address allowed text and number and 15 length!");
+                                    String address = validation("=> Enter Address: ", "^[a-zA-Z\\d ]{1,15}$", "Address allowed text, numbers, and max 15 characters!");
                                     e.setAddress(address);
-                                    System.out.println("* Address has updated success fully! *");
-                                    continue;
+                                    System.out.println(Color.GREEN.getColor("* Address has updated success fully! *"));
                                 }
 
                                 case 3 -> {
-                                    double salary = Double.parseDouble(validation("=> Change Salary To: ", "[1-9]\\d{0,5}(\\.\\d{1,2})?", "Salary allowed only number and maximum 999999!"));
+                                    double salary = Double.parseDouble(validation("=> Enter Salary: ", "^[1-9]\\d{0,5}(\\.\\d{1,2})?$", "Salary allowed only numbers, max 999999.99!"));
                                     ((SalariesEmployee) e).setSalary(salary);
-                                    System.out.println("* Salary has updated success fully! *");
-                                    continue;
+                                    System.out.println(Color.GREEN.getColor("* Salary has updated success fully! *"));
                                 }
                                 case 4 ->{
-                                    double bonus = Double.parseDouble(validation("=> Enter bonus: ", "[1-9]\\d{0,3}(\\.\\d{1,2})?", "Bonus allowed only number and maximum 9999!"));
+                                    double bonus = Double.parseDouble(validation("=> Enter bonus: ", "^[1-9]\\d{0,3}(\\.\\d{1,2})?$", "Bonus allowed only numbers up to 9999.99!"));
                                     ((SalariesEmployee) e).setBonus(bonus);
-                                    System.out.println("* Bonus has updated success fully! *");
-                                    continue;
+                                    System.out.println(Color.GREEN.getColor("* Bonus has updated success fully! *"));
                                 }
                                 case 0 -> {
                                     break update;
                                 }
-                                default -> System.out.println("Invalid option!");
+                                default -> System.out.println(Color.RED.getColor("Invalid option!"));
                             }
                         } catch (NumberFormatException n) {
-                            System.out.println("Option allowed only number!");
+                            System.out.println(Color.RED.getColor("Option allowed only number!"));
                         }
                     }else{
                         System.out.println("1. Name\t\t2. Address\t\t3. Hour\t\t4. Rate\t\t0. Cancel");
@@ -351,41 +339,36 @@ public class Main {
                             int op = Integer.parseInt(sc.nextLine());
                             switch (op) {
                                 case 1 -> {
-                                    String name = validation("=> Change Name To: ", "([a-zA-Z]+\\s?){1,15}", "Name allowed only text and 15 length!");
+                                    String name = validation("=> Enter Name: ", "^[a-zA-Z ]{1,15}$", "Name allowed only text and max 15 characters!");
                                     e.setName(name);
-                                    System.out.println("* Name has updated success fully! *");
-                                    continue;
+                                    System.out.println(Color.GREEN.getColor("* Name has updated success fully! *"));
                                 }
                                 case 2 -> {
-                                    String address = validation("=> Change Address To: ", "([a-zA-Z\\d]+\\s?){1,15}", "Address allowed text and number and 15 length!");
+                                    String address = validation("=> Enter Address: ", "^[a-zA-Z\\d ]{1,15}$", "Address allowed text, numbers, and max 15 characters!");
                                     e.setAddress(address);
-                                    System.out.println("* Address has updated success fully! *");
-                                    continue;
+                                    System.out.println(Color.GREEN.getColor("* Address has updated success fully! *"));
                                 }
 
                                 case 3 -> {
-                                    int hour = Integer.parseInt(validation("=> Enter Hour: ", "[1-9]\\d{0,2}", "Hour allowed only number and maximum 999!"));
+                                    int hour = Integer.parseInt(validation("=> Enter Hour: ", "^[1-9]\\d{0,2}$", "Hour allowed only numbers up to 999!"));
                                     ((HourSalaryEmployee)e).setHourWorked(hour);
-                                    System.out.println("* Hour has updated success fully! *");
-                                    continue;
+                                    System.out.println(Color.GREEN.getColor("* Hour has updated success fully! *"));
                                 }
                                 case 4->{
-                                    double rate = Double.parseDouble(validation("=> Enter Rate: ", "[1-9]\\d{0,3}(\\.\\d{1,2})?", "Salary allowed only number and maximum 9999!"));
+                                    double rate = Double.parseDouble(validation("=> Enter Rate: ", "^[1-9]\\d{0,3}(\\.\\d{1,2})?$", "Rate allowed only numbers up to 9999.99!"));
                                     ((HourSalaryEmployee)e).setRate(rate);
-                                    System.out.println("* Rate has updated success fully! *");
-                                    continue;
+                                    System.out.println(Color.GREEN.getColor("* Rate has updated success fully! *"));
                                 }
                                 case 0 -> {
                                     break update;
                                 }
-                                default -> System.out.println("Invalid option!");
+                                default -> System.out.println(Color.RED.getColor("Invalid option!"));
                             }
                         } catch (NumberFormatException n) {
-                            System.out.println("Option allowed only number!");
+                            System.out.println(Color.RED.getColor("Option allowed only number!"));
                         }
                     }
                 }
-                System.out.println(tSearch.render());
             }
         });
     }
@@ -401,9 +384,9 @@ public class Main {
                         return sid;
                     }
                 }
-                System.out.println("ID not found!");
+                System.out.println(Color.RED.getColor("ID not found!"));
             } catch (NumberFormatException e) {
-                System.out.println("Input allowed only number!");
+                System.out.println(Color.RED.getColor("Input allowed only number!"));
             }
         }
     }
@@ -415,13 +398,13 @@ public class Main {
             boolean valid = Pattern.matches(regex, input);
             if(valid){
                 if (input.trim().isEmpty()){
-                    System.out.println("\u001B[31m"+"Input can't be empty!"+"\u001B[0m");
+                    System.out.println(Color.RED.getColor("Input can't be empty!"));
                     continue;
                 }
                 return input;
             }
             else{
-                System.out.println(errMessage);
+                System.out.println(Color.RED.getColor(errMessage));
             }
         }
 
